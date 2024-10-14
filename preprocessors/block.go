@@ -8,15 +8,15 @@ import (
 )
 
 type Block struct {
-	content string
-}
-
-func (block Block) ProcessToC() string {
-	return "TBD"
+	contentLines []string
 }
 
 func (block Block) ToString() string {
-	return block.content
+	content := ""
+	for _, line := range block.contentLines {
+		content += line
+	}
+	return content
 }
 
 func processString(line string, foundOpen bool) string {
@@ -52,10 +52,13 @@ func ProcessToBlocks(filePath string) []Block {
 	block := Block{}
 
 	for fileScanner.Scan() {
+		if strings.Trim(fileScanner.Text(), " ") == "" {
+			continue
+		}
 		foundChar := processString(fileScanner.Text(), found)
 		found = found || foundChar == "{"
 
-		block.content += fileScanner.Text()
+		block.contentLines = append(block.contentLines, fileScanner.Text())
 		if foundChar == "}" {
 			blocks = append(blocks, block)
 			block = Block{}
