@@ -58,7 +58,7 @@ func ProcessToBlocks(filePath string) []Block {
 		foundChar := processString(fileScanner.Text(), found)
 		found = found || foundChar == "{"
 
-		block.contentLines = append(block.contentLines, fileScanner.Text())
+		block.contentLines = append(block.contentLines, fileScanner.Text()+"!")
 		if foundChar == "}" {
 			blocks = append(blocks, block)
 			block = Block{}
